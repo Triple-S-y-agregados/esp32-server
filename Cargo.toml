@@ -8,4 +8,4 @@ edition = "2018"
 
 [dependencies]
 actix-web = "3"
-database-lib = { git = "https://github.com/Triple-S-y-agregados/database-lib.git" }
+database-lib = { path = "database-lib" }
