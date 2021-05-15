@@ -1,11 +1,15 @@
-use actix_web::{get, post, HttpResponse, Responder};
+use actix_web::{post, HttpResponse, Responder, web};
+use serde::{Deserialize, Serialize};
+use database_lib::{create_record};
 
-#[get("/")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().body("Hello world!")
+#[derive(Deserialize, Serialize)]
+struct NewRecord {
+    voltage: i32
 }
 
-#[post("/echo")]
-async fn echo(req_body: String) -> impl Responder {
-    HttpResponse::Ok().body(req_body)
+#[post("/voltage")]
+async fn voltage(record: web::Json<NewRecord>) -> impl Responder {
+    create_record(&record.voltage);
+
+    HttpResponse::Ok()
 }

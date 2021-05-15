@@ -8,8 +8,7 @@ use endpoints::*;
 async fn main() -> std::io::Result<()> {
     HttpServer::new(|| {
         App::new()
-            .service(hello)
-            .service(echo)
+            .service(voltage)
     })
     .bind("127.0.0.1:8080")?
     .run()
