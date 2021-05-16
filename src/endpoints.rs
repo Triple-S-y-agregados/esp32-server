@@ -1,6 +1,6 @@
-use actix_web::{get, post, HttpResponse, Responder, web};
+use actix_web::{get, post, delete, HttpResponse, Responder, web};
 use serde::{Deserialize, Serialize};
-use database_lib::{create_record, get_all_records};
+use database_lib::{create_record, get_all_records, clean as database_clean};
 
 #[derive(Deserialize, Serialize)]
 struct NewRecord {
@@ -36,4 +36,11 @@ async fn records() -> impl Responder {
     }
 
     web::Json(record_list)
+}
+
+#[delete("/records")]
+async fn clean() -> impl Responder {
+    database_clean();
+
+    HttpResponse::Ok()
 }
