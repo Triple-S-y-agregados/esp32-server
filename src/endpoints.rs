@@ -1,6 +1,6 @@
 use actix_web::{get, post, delete, HttpResponse, Responder, web};
 use serde::{Deserialize, Serialize};
-use database_lib::{create_record, get_all_records, clean as database_clean};
+use database_lib::{create_record, get_all_records, clean as database_clean, get_last_records};
 
 #[derive(Deserialize, Serialize)]
 struct NewRecord {
@@ -27,6 +27,24 @@ async fn records() -> impl Responder {
     let mut record_list: Vec<Record> = Vec::new();
 
     for record in &records {
+        record_list
+            .push(Record { 
+                id: record.id,
+                timestamp: record.timestamp.clone(),
+                voltage: record.voltage 
+            });
+    }
+
+    web::Json(record_list)
+}
+
+#[get("/records/{n}")]
+async fn get_records(web::Path(n): web::Path<i64>) -> impl Responder {
+    let other_records = get_last_records(n);
+
+    let mut record_list: Vec<Record> = Vec::new();
+
+    for record in &other_records {
         record_list
             .push(Record { 
                 id: record.id,
