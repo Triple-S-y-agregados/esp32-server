@@ -4,14 +4,14 @@ use database_lib::{create_record, get_all_records, clean as database_clean, get_
 
 #[derive(Deserialize, Serialize)]
 struct NewRecord {
-    voltage: i32
+    voltage: f32
 }
 
 #[derive(Deserialize, Serialize)]
 struct Record {
     id: i32,
     timestamp: String,
-    voltage: i32
+    voltage: f32
 }
 
 #[post("/voltage")]
