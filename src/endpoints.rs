@@ -58,7 +58,8 @@ async fn get_records(web::Path(n): web::Path<i64>) -> impl Responder {
 
 #[delete("/records")]
 async fn clean() -> impl Responder {
-    database_clean();
-
-    HttpResponse::Ok()
+    match database_clean() {
+        Ok(_) => HttpResponse::Ok(),
+        Err(_) => HttpResponse::NotFound()
+    }
 }
