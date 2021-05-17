@@ -21,7 +21,7 @@ async fn main() -> std::io::Result<()> {
             .service(get_records)
             .service(clean)
     })
-    .bind("127.0.0.1:44388")?
+    .bind("0.0.0.0:44388")?
     .run()
     .await
 }
