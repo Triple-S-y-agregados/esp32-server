@@ -18,6 +18,8 @@ struct Record {
 async fn voltage(record: web::Json<NewRecord>) -> impl Responder {
     create_record(&record.voltage);
 
+    println!("Received: {}", &record.voltage);
+
     HttpResponse::Ok()
 }
 
@@ -59,7 +61,13 @@ async fn get_records(web::Path(n): web::Path<i64>) -> impl Responder {
 #[delete("/records")]
 async fn clean() -> impl Responder {
     match database_clean() {
-        Ok(_) => HttpResponse::Ok(),
-        Err(_) => HttpResponse::NotFound()
+        Ok(_) => {
+            println!("The database has been cleaned");
+            return HttpResponse::Ok();
+        },
+        Err(_) => {
+            println!("The database could not been cleaned");
+            return HttpResponse::NotFound();
+        }
     }
 }
