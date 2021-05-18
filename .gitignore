@@ -3,4 +3,5 @@ Cargo.lock
 
 # Diesel
 db.sqlite
-.env
+
+.idea
