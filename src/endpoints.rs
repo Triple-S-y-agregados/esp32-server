@@ -4,7 +4,9 @@ use database_lib::{create_record, get_all_records, clean as database_clean, get_
 
 #[derive(Deserialize, Serialize)]
 struct NewRecord {
-    voltage: f32
+    voltage: f32,
+    vertical: i32,
+    horizontal: i32
 }
 
 #[derive(Deserialize, Serialize)]
@@ -14,13 +16,37 @@ struct Record {
     voltage: f32
 }
 
+static mut VERTICAL: i32 = 0;
+static mut HORIZONTAL: i32 = 0;
+
 #[post("/voltage")]
 async fn voltage(record: web::Json<NewRecord>) -> impl Responder {
     create_record(&record.voltage);
 
     println!("Received: {}", &record.voltage);
 
+    unsafe {
+        VERTICAL = record.vertical;
+        HORIZONTAL = record.horizontal;
+    }
+
     HttpResponse::Ok()
+}
+
+#[get("/angles")]
+async fn angles() -> impl Responder {
+    #[derive(Deserialize, Serialize)]
+    struct Angles {
+        vertical: i32,
+        horizontal: i32
+    }
+
+    unsafe {
+        return web::Json(Angles {
+            vertical: VERTICAL,
+            horizontal: HORIZONTAL
+        })
+    }
 }
 
 #[get("/records")]

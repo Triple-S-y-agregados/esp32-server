@@ -16,6 +16,7 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .wrap(cors)
+            .service(angles)
             .service(voltage)
             .service(records)
             .service(get_records)
